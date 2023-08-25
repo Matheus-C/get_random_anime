@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qual é o próximo</title>
+</head>
+<body>
+    <h1>Bem vindo!!</h1>
+    <p>esta ferramenta é para você que tem dificuldade em escolher o proximo anime que você vai ver, 
+        escolheremos um aleatóriamente da sua lista de "plan to watch" do Myanimelist, para isso é 
+        necessário que você esteja logado na sua conta.</p>
+    <%if (not logado){%>
+        <div class="container">
+            <div class="login">
+                <form action="">
+                    <input type="text" id="login" name="login" class=""/><label for="login">Login: </label>
+                    <input type="password" id="password" name="password" class=""/><label for="password">Senha: </label>
+                    <input type="submit"/>
+                </form>
+            </div>
+        </div>
+    <%}else{%>
+        <% if (typeof resultado !== "undefined") {%>
+        <div class="container">
+            <div class="resultado">
+                <table>
+                    <tr>
+                        <td>imagem</td><td>Título</td><td>Sinopse</td>
+                    </tr>
+                    <tr>
+                        <td><img src="'<%= resultado.img %>'" alt="'<%= resultado.nome %>'"></td>
+                        <td><h4><%= resultado.titulo %></h4></td>
+                        <td><p><%= resultado.sinopse %></p></td>
+                    </tr>
+                </table>
+            </div>
+        <% } %>
+            <button >Novo resultado</button>
+        </div>
+</body>
+</html>
