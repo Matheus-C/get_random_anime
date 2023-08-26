@@ -10,9 +10,7 @@
     "ejs": "^3.1.9",
     "help": "^3.0.2",
     "mongoose": "^7.4.4",
-    "node": "^20.5.1"
-  },
-  "devDependencies": {
-    "daemon": "^1.1.0"
+    "node": "^20.5.1",
+    "nodemon": "^3.0.1"
   }
 }

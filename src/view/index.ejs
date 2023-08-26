@@ -21,7 +21,7 @@
             </div>
         </div>
     <%}else{%>
-        <% if (typeof resultado !== "undefined") {%>
+        <% if (typeof anime !== "undefined") {%>
         <div class="container">
             <div class="resultado">
                 <table>
@@ -29,14 +29,14 @@
                         <td>imagem</td><td>Título</td><td>Sinopse</td>
                     </tr>
                     <tr>
-                        <td><img src="'<%= resultado.img %>'" alt="'<%= resultado.nome %>'"></td>
-                        <td><h4><%= resultado.titulo %></h4></td>
-                        <td><p><%= resultado.sinopse %></p></td>
+                        <td><img src="'<%= anime.img %>'" alt="'<%= anime.nome %>'"></td>
+                        <td><h4><%= anime.titulo %></h4></td>
+                        <td><p><%= anime.sinopse %></p></td>
                     </tr>
                 </table>
             </div>
         <% } %>
-            <button >Novo resultado</button>
+            <a href="/getanime">Novo Anime</a>
         </div>
 </body>
 </html>
