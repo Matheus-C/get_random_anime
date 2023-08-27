@@ -10,14 +10,10 @@
     <p>esta ferramenta é para você que tem dificuldade em escolher o proximo anime que você vai ver, 
         escolheremos um aleatóriamente da sua lista de "plan to watch" do Myanimelist, para isso é 
         necessário que você esteja logado na sua conta.</p>
-    <%if (not logado){%>
+    <%if (typeof token === "undefined"){%>
         <div class="container">
             <div class="login">
-                <form action="">
-                    <input type="text" id="login" name="login" class=""/><label for="login">Login: </label>
-                    <input type="password" id="password" name="password" class=""/><label for="password">Senha: </label>
-                    <input type="submit"/>
-                </form>
+                <a href="/auth">clique aqui</a>
             </div>
         </div>
     <%}else{%>
@@ -35,8 +31,9 @@
                     </tr>
                 </table>
             </div>
-        <% } %>
+        
             <a href="/getanime">Novo Anime</a>
         </div>
+        <% }} %>
 </body>
 </html>
