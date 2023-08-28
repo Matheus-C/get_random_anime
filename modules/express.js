@@ -1,6 +1,19 @@
 const express = require('express');
 
 const app = express();
+const session = require('express-session');
+var sess = {
+    secret: "secret",
+    cookie: {},
+    token: undefined,
+    resave: true,
+    saveUninitialized: false
+};
+app.use(session(sess));
+
+
+
+app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 
@@ -9,21 +22,11 @@ const CLIENT_SECRET = "c73f92b68c6298b1a0e0480c9b593bf938783ff9c77ed1c89ce27020f
 
 
 const randomstring = require("randomstring");
-const crypto = require("crypto");
-const base64url = require("base64url");
+
 
 const code_verifier = randomstring.generate(128);
 
-const base64Digest = crypto
-  .createHash("sha256")
-  .update(code_verifier)
-  .digest("base64");
-
-console.log(base64Digest);
-
-const code_challenge = base64url.fromBase64(base64Digest);
-
-console.log(code_challenge);
+const code_challenge = code_verifier;
 
 app.set("view engine", "ejs");
 app.set("views", "src/views");
@@ -34,17 +37,20 @@ app.get("/auth", (req, res)=>{
 
 app.get("/oauth", async (req, res) => {
     const url = "https://myanimelist.net/v1/oauth2/token";
-    const data = {
+    const data = new URLSearchParams({
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET,
         'code': req.query.code,
         'code_verifier': code_verifier,
-        'grant_type': 'authorization_code'
-    };
+        'grant_type': "authorization_code"
+    });
+    
     try{
+        
     const response = await fetch(url, {method: "POST", 
-    body: data}).then(response=>response.json()).then(response => console.log(JSON.stringify(response)));
-    const token = response.json();
+    headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, body: data}).then(response=>response.json());
+    req.session.token = response;
+    
     res.redirect("/");
     }catch(error){
         console.log(error.message);
@@ -53,7 +59,8 @@ app.get("/oauth", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.render("index");
+    console.log(req.session.token);
+    res.render("index", {session: req.session.token});
 });
 
 app.get("/getanime", (req, res) => {
@@ -71,7 +78,10 @@ app.get("/getanime", (req, res) => {
     }
     
 });
-
+app.get("/logout", (req, res)=> {
+    req.session.destroy();
+    res.redirect("/");
+});
 const port = 8080;
 
 app.listen(port, () => console.log('servidor conectado na porta ' + port));
