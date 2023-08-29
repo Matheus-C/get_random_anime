@@ -17,8 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 
-const CLIENT_ID = "76f967452b8f6c2202aa934b10a39800";
-const CLIENT_SECRET = "c73f92b68c6298b1a0e0480c9b593bf938783ff9c77ed1c89ce27020fb5d751d";
+
 
 
 const randomstring = require("randomstring");
@@ -32,14 +31,14 @@ app.set("view engine", "ejs");
 app.set("views", "src/views");
 
 app.get("/auth", (req, res)=>{
-    res.redirect(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&code_challenge=${code_challenge}&state=requestauth`);
+    res.redirect(`https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&code_challenge=${code_challenge}&state=requestauth`);
 });
 
 app.get("/oauth", async (req, res) => {
     const url = "https://myanimelist.net/v1/oauth2/token";
     const data = new URLSearchParams({
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
+        'client_id': process.env.CLIENT_ID,
+        'client_secret': process.env.CLIENT_SECRET,
         'code': req.query.code,
         'code_verifier': code_verifier,
         'grant_type': "authorization_code"
