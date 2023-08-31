@@ -58,7 +58,6 @@ app.get("/oauth", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    console.log(req.session.token);
     res.render("index", {session: req.session.token});
 });
 
