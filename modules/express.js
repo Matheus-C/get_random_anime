@@ -1,5 +1,5 @@
 const express = require('express');
-
+const request = require("request");
 const app = express();
 const session = require('express-session');
 var sess = {
@@ -16,8 +16,6 @@ app.use(session(sess));
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
-
-
 
 
 const randomstring = require("randomstring");
@@ -50,6 +48,7 @@ app.get("/oauth", async (req, res) => {
     headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, body: data}).then(response=>response.json());
     req.session.token = response;
     
+    
     res.redirect("/");
     }catch(error){
         console.log(error.message);
@@ -61,16 +60,30 @@ app.get("/", (req, res) => {
     res.render("index", {session: req.session.token});
 });
 
-app.get("/getanime", (req, res) => {
+
+
+
+app.get("/getanime", async (req, res) => {
     try{
-        const data = fetch(`https://api.myanimelist.net/v2/users/@me/animelist?fields=list_status=plan_to_watch&limit=1000`, headers = {
-            'Authorization': `Bearer {access_token}`}).then((res)=>{
-        if (res.status === 200){
-            const selected = Math.floor(Math.random() * (data.length - 0 + 1) + 0);
-            return res.render("index", {anime: data[selected], token: token});
+        const response = await fetch(`https://api.myanimelist.net/v2/users/@me/animelist?status=plan_to_watch&limit=1000`, {Method: 'GET', headers: {
+            Authorization: `${req.session.token.token_type} ${req.session.token.access_token}`, Accept: 'application/json'}}).then((resp)=>{
+        if (resp.status === 200){
+            return resp.json();
         }
-        return console.log(`error status: ${res.status}`);
+        return console.log(`error status: ${resp.status}`);
         });
+        const selected = Math.floor(Math.random() * (response.data.length - 0 + 1) + 0);
+        const img = response.data[selected].node.main_picture.medium;
+        const titulo = response.data[selected].node.title;
+        const anime_data = await fetch(`https://api.myanimelist.net/v2/anime/${response.data[selected].node.id}?fields=synopsis`, {Method: 'GET', headers: {
+            Authorization: `${req.session.token.token_type} ${req.session.token.access_token}`, Accept: 'application/json'}}).then((resp)=>{
+            if (resp.status === 200){
+                const response = resp.json();
+                return response;
+            }
+            return console.log(`error status: ${resp.status}`);
+        });
+        return res.render("index", {titulo: titulo, img: img, sinopse: anime_data.synopsis, session: req.session.token});
     }catch(error){
         res.send(error.message);
     }

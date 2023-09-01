@@ -17,7 +17,7 @@
             </div>
         </div>
     <%}else{%>
-        <% if (typeof anime !== "undefined") {%>
+        <% if (typeof titulo !== "undefined") {%>
         <div class="container">
             <div class="resultado">
                 <table>
@@ -25,9 +25,9 @@
                         <td>imagem</td><td>Título</td><td>Sinopse</td>
                     </tr>
                     <tr>
-                        <td><img src="'<%= anime.img %>'" alt="'<%= anime.nome %>'"></td>
-                        <td><h4><%= anime.titulo %></h4></td>
-                        <td><p><%= anime.sinopse %></p></td>
+                        <td><img src="<%= img %>" alt="'<%= titulo %>'"></td>
+                        <td><h4><%= titulo %></h4></td>
+                        <td><p><%= sinopse %></p></td>
                     </tr>
                 </table>
             </div>

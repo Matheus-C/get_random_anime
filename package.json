@@ -4,7 +4,7 @@
   "description": "teste",
   "main": "index.js",
   "scripts": {
-    "start:anime": "nodemon index.js"
+    "anime": "nodemon index.js"
   },
   "dependencies": {
     "base64url": "^3.0.1",
@@ -14,6 +14,7 @@
     "express-session": "^1.17.3",
     "node": "^20.5.1",
     "nodemon": "^3.0.1",
-    "randomstring": "^1.3.0"
+    "randomstring": "^1.3.0",
+    "request": "^2.88.2"
   }
 }
